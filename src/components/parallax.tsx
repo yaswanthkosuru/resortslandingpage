@@ -1,4 +1,3 @@
-import f from "@/utils/flog";
 import { useScroll, useTransform, motion, useSpring } from "motion/react";
 import { useEffect, useState } from "react";
 
@@ -15,7 +14,7 @@ const Parallax: React.FC<ParallaxProps> = ({
   yMax,
   children,
 }) => {
-  const [width, setWidth] = useState<number>();
+  const [width, setWidth] = useState<number>(0);
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);

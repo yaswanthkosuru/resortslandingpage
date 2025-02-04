@@ -6,7 +6,6 @@ import { CiDatabase } from "react-icons/ci";
 import { motion } from "motion/react";
 import { TbBrandNextjs } from "react-icons/tb";
 import { IoAnalytics } from "react-icons/io5";
-import { div } from "motion/react-client";
 const projects = [
   {
     title: "Lushy - Fresh Vegetable Delivery App",
@@ -103,10 +102,7 @@ const TiltCard = ({ children }: { children: React.ReactNode }) => {
     </motion.div>
   );
 };
-const variants = {
-  hidden: { opacity: 0, y: "10%" },
-  visible: { opacity: 1, y: "0%" },
-};
+
 const containerVariants = {
   hidden: {},
   visible: {

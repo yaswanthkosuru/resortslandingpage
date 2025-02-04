@@ -1,16 +1,8 @@
-import {
-  MotionValue,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { MotionValue, useMotionValueEvent } from "motion/react";
 
-class Framer {
-  log(val: MotionValue<any>) {
-    useMotionValueEvent(val, "change", (value) => {
-      console.log(value);
-    });
-  }
+function Flog(val: MotionValue<any>) {
+  useMotionValueEvent(val, "change", (value) => {
+    console.log(value);
+  });
 }
-const f = new Framer();
-export default f;
+export default Flog;

@@ -1,10 +1,9 @@
 "use client";
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Projects from "@/components/Projects";
 import Hero from "@/components/Hero";
-import { motion } from "motion/react";
 
 const Navbar = () => {
   return (
@@ -29,8 +28,6 @@ const Navbar = () => {
     </nav>
   );
 };
-
-import { useState } from "react";
 
 const Page = () => {
   return (
