@@ -42,6 +42,7 @@ const Preloader = () => {
         onAnimationComplete={async () => {
           console.log("Animation complete");
           await sleep(500);
+          if (scope.current === null) return;
           animate(
             scope.current,
             { backgroundColor: `${colours.darkgreen}` },
