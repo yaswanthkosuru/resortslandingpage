@@ -1,3 +1,4 @@
+import Flog from "@/utils/flog";
 import { useScroll, useTransform, motion, useSpring } from "motion/react";
 import { useEffect, useState } from "react";
 
@@ -14,7 +15,7 @@ const Parallax: React.FC<ParallaxProps> = ({
   yMax,
   children,
 }) => {
-  const [width, setWidth] = useState<number>(0);
+  const [width, setWidth] = useState<number>(1000);
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
@@ -38,8 +39,10 @@ const Parallax: React.FC<ParallaxProps> = ({
     mass: 2.5, // Adjust mass for fluid movement
     restDelta: 0.001,
   });
+  // Flog(smoothProgress);
+  console.log(yMin, yMax, "ymin");
   const y = useTransform(smoothProgress, [0, 1], [yMin, yMax]);
-  // f.log(y);
+  Flog(y);
   if (isMobile) {
     return <>{children}</>;
   }

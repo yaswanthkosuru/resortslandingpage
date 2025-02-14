@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import BasicAnimate from "./basicAnimate";
 import Parallax from "./parallax";
 import Data from "@/common.json";
+import { motion } from "motion/react";
 const { HeroSection } = Data;
 
 const Globe = () => {
@@ -19,23 +20,49 @@ const Globe = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
+            <motion.path
               d="M564 282C564 437.744 437.744 564 282 564C126.256 564 0 437.744 0 282C0 126.256 126.256 0 282 0C437.744 0 564 126.256 564 282Z"
               fill="url(#paint0_linear_1_4)"
               id="path"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{
+                duration: 2,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+            />
+            <motion.path
+              d="M564 282C564 437.744 437.744 564 282 564C126.256 564 0 437.744 0 282C0 126.256 126.256 0 282 0C437.744 0 564 126.256 564 282Z"
+              stroke="white"
+              strokeWidth="4"
+              fill="transparent" // Remove fill, use stroke
             />
             <defs>
-              <linearGradient
+              <motion.linearGradient
                 id="paint0_linear_1_4"
                 x1="0.157599"
                 y1="292.976"
                 x2="563.842"
                 y2="271.024"
+                animate={{
+                  x1: [0, 564, 0], // Moves the gradient dynamically
+                  x2: [564, 0, 564],
+                  y1: [0, 564, 0],
+                  y2: [564, 0, 564],
+                }}
+                transition={{
+                  duration: 3,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatType: "loop",
+                }}
                 gradientUnits="userSpaceOnUse"
               >
                 <stop stopColor="#242425" />
                 <stop offset="1" stopColor="#010101" />
-              </linearGradient>
+              </motion.linearGradient>
             </defs>
           </svg>
         </BasicAnimate>

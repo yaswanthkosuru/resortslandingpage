@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "lenis/dist/lenis.css";
-import LenisScroll from "@/components/LenisScroll";
+import { outfit } from "./fonts";
 export const metadata: Metadata = {
   title: "Portfolio",
   description: "Yaswanth Portfolio",
@@ -14,9 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` antialiased`}>
-        <LenisScroll>{children}</LenisScroll>
-      </body>
+      <body className={` bg-primary ${outfit.className}`}>{children}</body>
     </html>
   );
 }

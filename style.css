@@ -1,0 +1,33 @@
+/* Container for text and globe */
+.container {
+  display: block;
+  padding: 20px;
+}
+
+.text-content {
+  text-align: left;
+  color: black;
+  font-size: 1.2rem;
+}
+
+/* Initially hide the globe on smaller screens */
+.globe {
+  display: none;
+}
+
+/* On larger screens, use flex layout showing text on left and globe on right */
+@media (min-width: 768px) {
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .text-content {
+    flex: 1;
+  }
+  .globe {
+    display: block;
+    flex: 0 0 auto;
+    margin-left: 20px;
+  }
+}

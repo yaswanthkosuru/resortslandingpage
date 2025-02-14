@@ -6,18 +6,21 @@ import { CiDatabase } from "react-icons/ci";
 import { motion } from "motion/react";
 import { TbBrandNextjs } from "react-icons/tb";
 import { IoAnalytics } from "react-icons/io5";
+import { spring } from "motion";
+import RandomGrid from "./RandomGrid";
+import { div } from "motion/react-client";
 const projects = [
   {
-    title: "Lushy - Fresh Vegetable Delivery App",
+    title: "Lushy - Fresh Vegetable Delivery website",
     description:
-      "Lushy is an online platform that connects users with local farmers to deliver fresh, organic vegetables straight to their doorsteps. The app ensures convenience, affordability, and quality, offering a seamless shopping experience. With real-time order tracking and secure payment options, Lushy makes healthy eating easy!",
+      "An online platform that connects users with local farmers to deliver fresh, organic vegetables straight to their doorsteps. The website ensures convenience, affordability, and quality, offering a seamless shopping experience. With real-time order tracking and secure payment options, Lushy makes healthy eating easy!",
     technologies: [
       { name: "Nextjs", icon: <TbBrandNextjs className="w-5 h-5 " /> },
       { name: "React", icon: <FaReact className="w-5 h-5 " /> },
       { name: "Nodejs", icon: <FaNodeJs className="w-5 h-5 " /> },
       { name: "MongoDB", icon: <CiDatabase className="w-5 h-5 " /> },
     ],
-    imageSrc: "/lushly.png",
+    imageSrc: "/projects/lushly.svg",
     videoSrc: null,
     imageAlt: "Woman taking photo of crops",
   },
@@ -67,151 +70,81 @@ interface ProjectData {
   videoSrc: string | null | undefined;
   imageAlt: string;
 }
-const TiltCard = ({ children }: { children: React.ReactNode }) => {
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { left, top, width, height } =
-      e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - left - width / 2;
-    const y = e.clientY - top - height / 2;
-
-    const rotateX = (-y / height) * 15; // Max tilt ±15deg
-    const rotateY = (x / width) * 15; // Max tilt ±15deg
-
-    setRotateX(rotateX);
-    setRotateY(rotateY);
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
-
-  return (
-    <motion.div
-      className="relative p-4 "
-      style={{ perspective: 1000 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      animate={{ rotateX, rotateY }}
-      transition={{ type: "spring", stiffness: 100, damping: 10 }}
-    >
-      <div className="">{children}</div>
-    </motion.div>
-  );
-};
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.3, // Stagger each child with a 0.3s delay
-    },
-  },
-};
-
-const headingVariants = {
-  hidden: { opacity: 0, x: -50 }, // Start off-screen from the left
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-};
-
-const textVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-};
-
-const mediaVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7 } },
-};
 
 function Project({ data }: { data: ProjectData }) {
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ amount: 0.5, once: true }}
-      onViewportEnter={() => console.log("Entered View")}
-      onViewportLeave={() => console.log("Left View")}
-      className="mx-auto"
-    >
-      <div>
-        <TiltCard>
-          <div className="inline-flex cursor-pointer items-center justify-center p-1 sm:p-4">
-            <div
-              className={` ${outfit.className} w-full sm:w-3/4 max-w-7xl bg-[#F7F7F7] text-black/80 rounded-3xl overflow-hidden`}
+    <motion.div className="bg-gray-100 max-w-6xl mx-auto cursor-pointer sm:flex sm:justify-between sm:items-center sm:p-4 rounded-md sm:gap-">
+      {/* Left: Image/Video */}
+      <motion.div
+        className="w-full sm:w-1/2 max-w-md flex-shrink-0"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {data.videoSrc ? (
+          <video
+            src={data.videoSrc}
+            className="w-full h-auto object-cover rounded-md"
+            loop
+            autoPlay
+            muted
+          />
+        ) : (
+          data.imageSrc && (
+            <Image
+              className="w-full h-auto object-cover rounded-md"
+              src={data.imageSrc}
+              alt={data.imageAlt}
+              width={500}
+              height={500}
+            />
+          )
+        )}
+      </motion.div>
+
+      {/* Right: Text Content */}
+      <div className="flex-1 justify-between items-center min-w-0">
+        <motion.h1 className="font-bold text-black/90 text-lg sm:text-xl">
+          {data.title}
+        </motion.h1>
+        <motion.p className="hidden sm:block text-sm sm:text-base text-gray-700 mt-2">
+          {data.description}
+        </motion.p>
+        <div className="flex gap-4 flex-wrap mt-2">
+          {data.technologies.map((tech, index) => (
+            <button
+              key={index}
+              className="flex items-center gap-2 text-sm sm:text-base"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 sm:gap-8 p-2 sm:p-6">
-                {/* Left Content */}
-                <div className="flex flex-col justify-center space-y-6">
-                  <motion.h1
-                    className="font-bold text-lg"
-                    variants={headingVariants}
-                  >
-                    {data.title}
-                  </motion.h1>
-
-                  <motion.p variants={textVariants}>
-                    {data.description}
-                  </motion.p>
-
-                  <div className="flex gap-4 flex-wrap mt-2">
-                    {data.technologies.map((tech, index) => (
-                      <button
-                        key={index}
-                        className="inline-flex items-center gap-2"
-                      >
-                        {tech.icon}
-                        {tech.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right Image */}
-                <motion.div
-                  className="relative h-[250px] sm:h-auto rounded-2xl overflow-hidden"
-                  variants={mediaVariants}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {data.videoSrc ? (
-                    <video
-                      src={data.videoSrc}
-                      className="w-full h-full object-cover"
-                      loop
-                      autoPlay
-                      muted
-                    />
-                  ) : (
-                    data.imageSrc && (
-                      <Image
-                        src={data.imageSrc}
-                        alt={data.imageAlt}
-                        className="w-full h-full object-cover"
-                        fill
-                      />
-                    )
-                  )}
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </TiltCard>
+              {tech.icon}
+              {tech.name}
+            </button>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
 }
 
 export default function Projects() {
+  const Projects = projects.slice(0, 1).map((project, index) => {
+    return (
+      <div key={index}>
+        <Project data={project} />;
+      </div>
+    );
+  });
+
   return (
-    <div>
-      {projects.map((project, index) => (
-        <Project key={index} data={project} />
-      ))}
+    <div className="container p-2 mx-auto" id="projects">
+      <h1>
+        <div className="">
+          <span className={`text-2xl font-semibold ${outfit.className}`}>
+            Selected Projects
+          </span>
+        </div>
+      </h1>
+      <div className="mt-2"></div>
+      {Projects}
     </div>
   );
 }
