@@ -1,6 +1,11 @@
 import { useEffect, useRef } from "react";
 import CloseIcon from "./ui/Closeicon";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+} from "motion/react";
 interface VideoPlayerProps {
   setIsclicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -44,6 +49,10 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
         y: ["100%", "0%"],
         transition: { duration: 1 },
       }}
+      exit={{
+        y: "-100%",
+        transition: { duration: 1 },
+      }}
       onClick={() => setIsclicked((prev) => !prev)}
       className=" cursor-pointer fixed inset-0 bg-black z-50 flex justify-center items-center h-screen"
     >
@@ -57,8 +66,8 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
       <div className="relative  w-3/4 h-3/4">
         <video
           ref={videoRef}
-          autoPlay
           loop
+          autoPlay
           onTimeUpdate={handleProgress}
           className="h-full w-full object-cover rounded-lg"
         >

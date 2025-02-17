@@ -1,16 +1,20 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  AnimatePresence,
   motion,
   MotionValue,
+  useAnimation,
   useMotionValue,
   useScroll,
   useTransform,
+  Variants,
 } from "motion/react";
 import Flog from "@/utils/flog";
 import NavBar from "./Navbar";
 import PlayIcon from "./ui/Playicon";
 import { useSpring } from "motion/react";
+import VideoPlayer from "./Videowithbackground";
 
 interface RectangleGroupProps {
   rectangleIndices: number[];
@@ -176,14 +180,12 @@ const Marquee: React.FC<MarqueeProps> = ({ text }) => {
   );
 };
 
-function HeroComponent({
-  setIsclicked,
-}: {
-  setIsclicked: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+function HeroComponent() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const controls = useAnimation();
   const springConfig = { stiffness: 300, damping: 30 };
+  const [isClicked, setIsClicked] = useState(false);
   const mouseX = useSpring(x, springConfig);
   const mouseY = useSpring(y, springConfig);
   useEffect(() => {
@@ -195,11 +197,22 @@ function HeroComponent({
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, []);
   const handlevideoclick = () => {
-    setIsclicked(true);
+    setIsClicked((prev: any) => !prev);
   };
+  useEffect(() => {
+    if (isClicked) {
+      console.log("clicked");
+      controls.start("animate");
+    } else {
+      controls.start("initial");
+    }
+  }, [isClicked]);
 
   return (
     <div className=" cursor-pointer">
+      <AnimatePresence>
+        {isClicked && <VideoPlayer setIsclicked={setIsClicked} />}
+      </AnimatePresence>
       <motion.div
         className="absolute z-20"
         onClick={handlevideoclick}

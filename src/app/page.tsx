@@ -6,10 +6,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Details from "@/components/details";
 import VideoPlayer from "@/components/Videowithbackground";
+import { useAnimation } from "motion/react";
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
-  const [Isclicked, setIsclicked] = React.useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,8 +25,7 @@ const Page = () => {
 
   return (
     <div>
-      <Hero setIsclicked={setIsclicked} />
-      <VideoPlayer setIsclicked={setIsclicked} />;
+      <Hero />
       <VillaImage />
       <Details />
       <div className="h-screen"></div>
