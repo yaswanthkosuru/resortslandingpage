@@ -188,6 +188,8 @@ function HeroComponent() {
   const [isClicked, setIsClicked] = useState(false);
   const mouseX = useSpring(x, springConfig);
   const mouseY = useSpring(y, springConfig);
+  const { scrollY } = useScroll();
+  const navY = useTransform(scrollY, [250, 300], ["-10%", "-200%"]);
   useEffect(() => {
     const onMouseMove = (event: MouseEvent) => {
       mouseX.set(event.clientX - 28);
@@ -221,7 +223,10 @@ function HeroComponent() {
         <PlayIcon />
       </motion.div>
       <Background />
-      <motion.div className="fixed top-10 left-28 right-10 w-[90%] z-10">
+      <motion.div
+        style={{ y: navY }}
+        className="fixed top-10 left-28 right-10 w-[90%] z-10"
+      >
         <NavBar />
       </motion.div>
       <div className="absolute bottom-[1%] left-0 right-0 z-10">

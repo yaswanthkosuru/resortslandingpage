@@ -1,11 +1,6 @@
 import { useEffect, useRef } from "react";
 import CloseIcon from "./ui/Closeicon";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-} from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 interface VideoPlayerProps {
   setIsclicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -26,21 +21,13 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
     };
     window.addEventListener("mousemove", onMouseMove);
     return () => window.removeEventListener("mousemove", onMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   const handleProgress = () => {
     if (!videoRef.current || !progressRef.current) return;
     const progress =
       (videoRef.current.currentTime / videoRef.current.duration) * 100;
     progressRef.current.value = progress.toString();
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!videoRef.current) return;
-
-    const seekTime =
-      (parseFloat(e.target.value) / 100) * videoRef.current.duration;
-    videoRef.current.currentTime = seekTime;
   };
 
   return (
@@ -54,9 +41,8 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
         transition: { duration: 1 },
       }}
       onClick={() => setIsclicked((prev) => !prev)}
-      className=" cursor-pointer fixed inset-0 bg-black z-50 flex justify-center items-center h-screen"
+      className=" cursor-pointer overflow-hidden fixed inset-0 bg-black z-50 flex justify-center items-center h-screen"
     >
-      {/* Video Container */}
       <motion.div
         className="absolute left-0 top-0 z-20"
         style={{ x: mouseX, y: mouseY }}
@@ -79,17 +65,6 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
           {/* Play/Pause Button */}
 
           {/* Seek Bar */}
-          <input
-            ref={progressRef}
-            type="range"
-            min="0"
-            max="100"
-            defaultValue="0"
-            onChange={handleSeek}
-            className="w-full mx-2 cursor-pointer appearance-none bg-gray-300 h-1 rounded"
-            aria-label="Seek"
-            title="Seek"
-          />
         </div>
       </div>
     </motion.div>

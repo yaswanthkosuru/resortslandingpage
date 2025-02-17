@@ -3,7 +3,7 @@ import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 import { FaBars } from "react-icons/fa";
 
-export default function VillaImage() {
+export default function Introduction() {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,

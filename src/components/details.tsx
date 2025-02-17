@@ -18,16 +18,16 @@ export default function Details() {
   const y2 = useTransform(scrolly2progress, [0, 1], ["-10%", "50%"]);
 
   return (
-    <div className="grid grid-cols-2 mt-20 h-[70vh] ">
+    <div className="grid grid-cols-2 mt-20 h-[90vh] ">
       <div
         ref={container}
-        className="relative flex items-center justify-center h-[80vh] overflow-hidden"
+        className="relative flex items-center justify-center h-full overflow-hidden"
         style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
       >
         <div className="top-[-10vh] left-0 h-[120vh] w-full">
           <motion.div style={{ y }} className="relative w-full h-full">
             <Image
-              src={"/well.jpeg"}
+              src={"/yogagirl.jpeg"}
               fill
               alt="image"
               className="z-50"
