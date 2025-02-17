@@ -1,94 +1,228 @@
-import { outfit } from "@/app/fonts";
-import React, { useRef } from "react";
-import BasicAnimate from "./basicAnimate";
-import Parallax from "./parallax";
-import Data from "@/common.json";
-import { motion } from "motion/react";
-const { HeroSection } = Data;
+"use client";
+import React, { useEffect, useRef } from "react";
+import {
+  motion,
+  MotionValue,
+  useMotionValue,
+  useScroll,
+  useTransform,
+} from "motion/react";
+import Flog from "@/utils/flog";
+import NavBar from "./Navbar";
+import PlayIcon from "./ui/Playicon";
+import { useSpring } from "motion/react";
 
-const Globe = () => {
-  const svgRef = useRef<SVGSVGElement>(null);
+interface RectangleGroupProps {
+  rectangleIndices: number[];
+  scrollProgress: MotionValue<number>;
+  rectHeight: MotionValue<number>;
+  startOffset: number;
+}
+
+interface RectangleProps {
+  index: number;
+  rectHeight: MotionValue<number>;
+  startOffset: number;
+}
+
+const Rectangle: React.FC<RectangleProps> = ({
+  index,
+  rectHeight,
+  startOffset,
+}) => {
+  const yPosition = startOffset + index * 0.005 + index * 0.02;
+
   return (
-    <div>
-      <Parallax targetRef={svgRef} yMin={1} yMax={50}>
-        <BasicAnimate delay={2} duration={2}>
-          <svg
-            width="500"
-            height="500"
-            ref={svgRef}
-            viewBox="0 0 564 564"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <motion.rect
+      key={index}
+      x="0"
+      y={yPosition}
+      width="1"
+      style={{ height: rectHeight }}
+      fill="black"
+    />
+  );
+};
+
+const RectangleGroup: React.FC<RectangleGroupProps> = ({
+  rectangleIndices,
+  rectHeight,
+  startOffset,
+}) => {
+  return (
+    <>
+      {rectangleIndices.map((index) => (
+        <Rectangle
+          key={index}
+          index={index}
+          rectHeight={rectHeight}
+          startOffset={startOffset}
+        />
+      ))}
+    </>
+  );
+};
+
+const Background: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["end end", "end start"],
+  });
+  Flog(scrollYProgress, "scrollYProgress");
+
+  const firstGroupHeight = useTransform(scrollYProgress, [0, 0.6], [0, 0.026]);
+  const secondGroupHeight = useTransform(
+    scrollYProgress,
+    [0.25, 0.6],
+    [0, 0.026]
+  );
+  const thirdGroupHeight = useTransform(scrollYProgress, [0.25, 1], [0, 0.026]);
+  const fourthGroupHeight = useTransform(
+    scrollYProgress,
+    [0.75, 1],
+    [0, 0.026]
+  );
+
+  const rectangleIndices = Array.from({ length: 10 }, (_, i) => i + 1);
+  const handleLoadedData = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0.22;
+    }
+  };
+
+  const handleSeeked = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full h-[calc(100vh+70px)] bg-[#2B3530] overflow-hidden"
+    >
+      <video
+        autoPlay
+        loop
+        muted
+        ref={videoRef}
+        style={{
+          mask: "url(#videoMask)",
+          WebkitMask: "url(#videoMask)",
+        }}
+        onLoadedData={handleLoadedData}
+        onSeeked={handleSeeked}
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+      >
+        <source src="/resorts.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <svg style={{ position: "absolute", width: 0, height: 0 }}>
+        <defs>
+          <mask
+            id="videoMask"
+            maskUnits="objectBoundingBox"
+            maskContentUnits="objectBoundingBox"
           >
-            <motion.path
-              d="M564 282C564 437.744 437.744 564 282 564C126.256 564 0 437.744 0 282C0 126.256 126.256 0 282 0C437.744 0 564 126.256 564 282Z"
-              fill="url(#paint0_linear_1_4)"
-              id="path"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{
-                duration: 2,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
+            <rect width="1" height="1" fill="white" />
+            <RectangleGroup
+              startOffset={0.75}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={firstGroupHeight}
             />
-            <motion.path
-              d="M564 282C564 437.744 437.744 564 282 564C126.256 564 0 437.744 0 282C0 126.256 126.256 0 282 0C437.744 0 564 126.256 564 282Z"
-              stroke="white"
-              strokeWidth="4"
-              fill="transparent" // Remove fill, use stroke
+            <RectangleGroup
+              startOffset={0.5}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={secondGroupHeight}
             />
-            <defs>
-              <motion.linearGradient
-                id="paint0_linear_1_4"
-                x1="0.157599"
-                y1="292.976"
-                x2="563.842"
-                y2="271.024"
-                animate={{
-                  x1: [0, 564, 0], // Moves the gradient dynamically
-                  x2: [564, 0, 564],
-                  y1: [0, 564, 0],
-                  y2: [564, 0, 564],
-                }}
-                transition={{
-                  duration: 3,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  repeatType: "loop",
-                }}
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#242425" />
-                <stop offset="1" stopColor="#010101" />
-              </motion.linearGradient>
-            </defs>
-          </svg>
-        </BasicAnimate>
-      </Parallax>
+            <RectangleGroup
+              startOffset={0.25}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={thirdGroupHeight}
+            />
+            <RectangleGroup
+              startOffset={0.25}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={fourthGroupHeight}
+            />
+          </mask>
+        </defs>
+      </svg>
     </div>
   );
 };
-const Hero = () => {
-  const textRef = useRef<HTMLDivElement>(null);
+interface MarqueeProps {
+  text: string;
+}
+
+const Marquee: React.FC<MarqueeProps> = ({ text }) => {
   return (
-    <div className="px-4 relative h-[85vh]  sm:h-[90vh] overflow-hidden  bg-black text-white">
-      <div className="absolute top-16 left-16 sm:left-1/2">
-        <Globe />
-      </div>
-      <Parallax targetRef={textRef} yMin={1} yMax={100}>
-        <BasicAnimate duration={1} delay={0}>
-          <div className="p-4 relative flex justify-center items-center h-[85vh]">
-            <div ref={textRef} className={`${outfit.className} max-w-3xl`}>
-              <h1 className="text-4xl font-bold mb-4">{HeroSection.title}</h1>
-              <p className="text-xl leading-loose">{HeroSection.description}</p>
-            </div>
-          </div>
-        </BasicAnimate>
-      </Parallax>
+    <div className="overflow-hidden whitespace-nowrap text-white py-20">
+      <motion.div
+        className="flex text-[150px] font-extralight leading-8"
+        animate={{ x: ["0%", "-100%"] }}
+        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+      >
+        <span className="mr-16">{text}</span>
+        <span className="mr-16">{text}</span>
+      </motion.div>
     </div>
   );
 };
 
-export default Hero;
+function HeroComponent({
+  setIsclicked,
+}: {
+  setIsclicked: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springConfig = { stiffness: 300, damping: 30 };
+  const mouseX = useSpring(x, springConfig);
+  const mouseY = useSpring(y, springConfig);
+  useEffect(() => {
+    const onMouseMove = (event: MouseEvent) => {
+      mouseX.set(event.clientX - 28);
+      mouseY.set(event.clientY - 28);
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, []);
+  const handlevideoclick = () => {
+    setIsclicked(true);
+  };
+
+  return (
+    <div className=" cursor-pointer">
+      <motion.div
+        className="absolute z-20"
+        onClick={handlevideoclick}
+        style={{ x: mouseX, y: mouseY }}
+      >
+        <PlayIcon />
+      </motion.div>
+      <Background />
+      <motion.div className="fixed top-10 left-28 right-10 w-[90%] z-10">
+        <NavBar />
+      </motion.div>
+      <div className="absolute bottom-[1%] left-0 right-0 z-10">
+        <Marquee text="Welcome to Yaswanth Resorts." />
+        <hr className="w-[85%] h-2 mx-auto mt-10" />
+        <div className="text-white text-xl text-center ">
+          Your Dream Getaway Awaits
+        </div>
+        <div className="text-white text-xl text-center">
+          Nature’s Embrace, Unmatched Elegance
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default HeroComponent;

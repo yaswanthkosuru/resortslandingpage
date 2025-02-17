@@ -15,6 +15,11 @@ export default {
       backgroundColor: {
         primary: "#2B3530",
         secondary: "#CED1BF",
+        lightgreen: "#30493D",
+      },
+      textColor: {
+        primary: "#CFCABD",
+        secondary: "#C37A55",
       },
       screens: {
         sm: "450px",
