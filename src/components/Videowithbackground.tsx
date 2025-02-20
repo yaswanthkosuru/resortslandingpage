@@ -64,7 +64,7 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
           className="h-full w-full object-cover rounded-lg"
         >
           <source
-            src="https://res.cloudinary.com/kvpproducts/video/upload/v1740044911/beach_jo13lr.mp4"
+            src="https://res.cloudinary.com/kvpproducts/video/upload/v1740063352/main_s5vwan.mp4"
             type="video/mp4"
           />
         </video>
