@@ -1,5 +1,5 @@
 import Flog from "@/utils/flog";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
 import { FaArrowRight } from "react-icons/fa";
@@ -57,40 +57,47 @@ function Links() {
 }
 function NavBar() {
   const container = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
+  const navY = useTransform(scrollY, [250, 300], ["-10%", "-200%"]);
   return (
     <motion.div
-      ref={container}
-      className="h-16 sticky text-xl w-full text-white top-20 z-50"
+      style={{ y: navY }}
+      className="fixed top-10 left-28 right-10 w-[90%] z-30"
     >
-      <div>
-        <div className="flex items-center justify-between h-full px-4">
-          <div className="inline-flex space-x-4">
-            <Logo />
-          </div>
-          <Links />
+      <motion.div
+        ref={container}
+        className="h-16 sticky text-xl w-full text-white top-20 z-50"
+      >
+        <div>
+          <div className="flex items-center justify-between h-full px-4">
+            <div className="inline-flex space-x-4">
+              <Logo />
+            </div>
+            <Links />
 
-          <div className="inline-flex items-center gap-10">
-            <button className="text-white border border-white p-[12px] flex justify-center items-center gap-2">
-              Get Started
-              <FaArrowRight className="-rotate-45 w-10" />
-            </button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <div className="inline-flex items-center gap-10">
+              <button className="text-white border border-white p-[12px] flex justify-center items-center gap-2">
+                Get Started
+                <FaArrowRight className="-rotate-45 w-10" />
+              </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

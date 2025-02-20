@@ -29,7 +29,6 @@ export const Rectangle: React.FC<RectangleProps> = ({
     step = 0.25 / totallen;
     yPosition = index * step + startOffset;
   }
-  console.log(yPosition, "yPosition");
 
   return (
     <motion.rect

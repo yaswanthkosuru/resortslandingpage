@@ -7,26 +7,12 @@ const letterAnimationVariants: Variants = {
   hidden: {
     opacity: 0,
   },
-  visible: (letterIndex: number) => {
-    console.log(letterIndex, "letter index");
-    if (letterIndex % 2 === 0) {
-      return {
-        opacity: 1,
-        y: [20, 0],
-        transition: {
-          type: "tween",
-          staggerChildren: 0.05,
-        },
-      };
-    }
-    return {
-      opacity: 1,
-      x: [20, 0],
-      transition: {
-        staggerChildren: 0.05,
-        type: "tween", // Different delay for even and odd
-      },
-    };
+  visible: {
+    opacity: 1,
+    transition: {
+      type: "tween",
+      staggerChildren: 0.05,
+    },
   },
 
   textColorChange: {
@@ -53,22 +39,31 @@ const AnimatedPreloader = () => {
   const backgroundAnimationControls = useAnimation();
 
   useEffect(() => {
+    let isMounted = true;
+
     async function runAnimationSequence() {
+      if (!isMounted) return;
       await textAnimationControls.start("visible");
       await sleep(500);
+      if (!isMounted) return;
       await textAnimationControls.start("textColorChange");
       await backgroundAnimationControls.start("backgroundColorChange");
       await sleep(500);
+      if (!isMounted) return;
       await textAnimationControls.start("exit");
     }
 
     runAnimationSequence();
-  }, [textAnimationControls, backgroundAnimationControls]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [backgroundAnimationControls, textAnimationControls]);
 
   const animatedLetters = displayText.split("").map((char, index) => (
     <motion.span
       variants={letterAnimationVariants}
-      className={`text-${index}`}
+      className={`text-${index} font-extralight`}
       key={index}
       custom={index}
     >

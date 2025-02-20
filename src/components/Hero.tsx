@@ -68,7 +68,10 @@ const Background: React.FC = () => {
         onSeeked={handleSeeked}
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
-        <source src="/bgvideo.mp4" type="video/mp4" />
+        <source
+          src="https://res.cloudinary.com/kvpproducts/video/upload/v1740043925/hero-bg_xybqx8.mp4"
+          type="video/mp4"
+        />
         Your browser does not support the video tag.
       </video>
       <svg style={{ position: "absolute", width: 0, height: 0 }}>
@@ -136,31 +139,24 @@ function HeroComponent() {
   const [isClicked, setIsClicked] = useState(false);
   const mouseX = useSpring(x, springConfig);
   const mouseY = useSpring(y, springConfig);
-  const { scrollY } = useScroll();
-  const navY = useTransform(scrollY, [250, 300], ["-10%", "-200%"]);
+
   const [showfollower, setShowFollower] = useState(false);
-  useEffect(() => {
-    const onMouseMove = (event: MouseEvent) => {
-      if (!showfollower) {
-        setShowFollower(true);
-      }
-      console.log(event.clientX, event.clientY);
-      mouseX.set(event.clientX - 28);
-      const y = Math.max(event.clientY - 28);
-      if (y < 110) {
-        setShowFollower(false);
-      }
-      mouseY.set(y);
-    };
-    window.addEventListener("mousemove", onMouseMove);
-    return () => window.removeEventListener("mousemove", onMouseMove);
-  }, []);
+  const onMouseMove = (event: React.MouseEvent) => {
+    if (!showfollower) {
+      setShowFollower(true);
+    }
+    mouseX.set(event.clientX - 28);
+    const y = Math.max(event.clientY - 28);
+    if (y < 110) {
+      setShowFollower(false);
+    }
+    mouseY.set(y);
+  };
   const handlevideoclick = () => {
     setIsClicked((prev: any) => !prev);
   };
   useEffect(() => {
     if (isClicked) {
-      console.log("clicked");
       controls.start("animate");
     } else {
       controls.start("initial");
@@ -168,7 +164,7 @@ function HeroComponent() {
   }, [isClicked]);
 
   return (
-    <div className=" cursor-pointer">
+    <div onMouseMove={onMouseMove} className=" cursor-pointer">
       <AnimatePresence>
         {isClicked && <VideoPlayer setIsclicked={setIsClicked} />}
       </AnimatePresence>
@@ -180,12 +176,7 @@ function HeroComponent() {
         <PlayIcon />
       </motion.div>
       <Background />
-      <motion.div
-        style={{ y: navY }}
-        className="fixed top-10 left-28 right-10 w-[90%] z-30"
-      >
-        <NavBar />
-      </motion.div>
+
       <div className="absolute bottom-[1%] left-0 right-0 z-10">
         <Marquee text="Welcome to Yaswanth Resorts." />
         <hr className="w-[85%] h-2 mx-auto mt-10" />

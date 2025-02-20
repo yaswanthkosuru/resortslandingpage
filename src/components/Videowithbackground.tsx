@@ -38,11 +38,11 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
     <motion.div
       animate={{
         clipPath: ["inset(100% 0 0 0)", "inset(0 0 0 0)"],
-        transition: { duration: 1 },
+        transition: { duration: 1, ease: "backIn" },
       }}
       exit={{
         clipPath: ["inset(0 0 0 0)", "inset(0 0 100% 0)"],
-        transition: { duration: 1 },
+        transition: { duration: 1, ease: "backOut" },
       }}
       onClick={() => setIsclicked((prev) => !prev)}
       className=" cursor-pointer overflow-hidden fixed inset-0 bg-black z-50 flex justify-center items-center h-screen"
@@ -63,7 +63,10 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
           onTimeUpdate={handleProgress}
           className="h-full w-full object-cover rounded-lg"
         >
-          <source src="/bgvideo.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/kvpproducts/video/upload/v1740044911/beach_jo13lr.mp4"
+            type="video/mp4"
+          />
         </video>
 
         {/* Custom Controls */}

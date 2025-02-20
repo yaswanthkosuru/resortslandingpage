@@ -5,14 +5,8 @@ import Introduction from "@/components/Introduction";
 import React from "react";
 import { useEffect, useState } from "react";
 import Details from "@/components/details";
+import NavBar from "@/components/Navbar";
 import Steps from "@/components/Steps";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import StickyRelativeDemo from "@/components/Pin";
-import Parallax from "@/components/parallax";
-gsap.registerPlugin(ScrollTrigger);
-gsap.registerPlugin(useGSAP);
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +14,7 @@ const Page = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 10);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -31,12 +25,13 @@ const Page = () => {
 
   return (
     <div>
+      <NavBar />
       <Hero />
       <Introduction />
       <Details />
       {/* <Parallax /> */}
-      <StickyRelativeDemo />
-      {/* <Steps /> */}
+      {/* <StickyRelativeDemo /> */}
+      <Steps />
       <div className="h-screen">2</div>
     </div>
   );

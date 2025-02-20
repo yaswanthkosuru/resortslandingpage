@@ -69,9 +69,6 @@ const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
             animate="enter"
             exit="exit"
             variants={pageVariants}
-            onAnimationComplete={() =>
-              console.log("Animation complete page transistion")
-            }
             className="absolute bg-[#1D1D1E] h-screen w-full z-50"
           >
             {" "}
