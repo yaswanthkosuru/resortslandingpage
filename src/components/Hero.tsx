@@ -15,57 +15,7 @@ import NavBar from "./Navbar";
 import PlayIcon from "./ui/Playicon";
 import { useSpring } from "motion/react";
 import VideoPlayer from "./Videowithbackground";
-
-interface RectangleGroupProps {
-  rectangleIndices: number[];
-  scrollProgress: MotionValue<number>;
-  rectHeight: MotionValue<number>;
-  startOffset: number;
-}
-
-interface RectangleProps {
-  index: number;
-  rectHeight: MotionValue<number>;
-  startOffset: number;
-}
-
-const Rectangle: React.FC<RectangleProps> = ({
-  index,
-  rectHeight,
-  startOffset,
-}) => {
-  const yPosition = startOffset + index * 0.005 + index * 0.02;
-
-  return (
-    <motion.rect
-      key={index}
-      x="0"
-      y={yPosition}
-      width="1"
-      style={{ height: rectHeight }}
-      fill="black"
-    />
-  );
-};
-
-const RectangleGroup: React.FC<RectangleGroupProps> = ({
-  rectangleIndices,
-  rectHeight,
-  startOffset,
-}) => {
-  return (
-    <>
-      {rectangleIndices.map((index) => (
-        <Rectangle
-          key={index}
-          index={index}
-          rectHeight={rectHeight}
-          startOffset={startOffset}
-        />
-      ))}
-    </>
-  );
-};
+import { RectangleGroup } from "./ui/Masks";
 
 const Background: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,8 +24,6 @@ const Background: React.FC = () => {
     target: containerRef,
     offset: ["end end", "end start"],
   });
-  Flog(scrollYProgress, "scrollYProgress");
-
   const firstGroupHeight = useTransform(scrollYProgress, [0, 0.6], [0, 0.026]);
   const secondGroupHeight = useTransform(
     scrollYProgress,
@@ -86,7 +34,7 @@ const Background: React.FC = () => {
   const fourthGroupHeight = useTransform(
     scrollYProgress,
     [0.75, 1],
-    [0, 0.026]
+    [0, 0.031]
   );
 
   const rectangleIndices = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -113,20 +61,20 @@ const Background: React.FC = () => {
         muted
         ref={videoRef}
         style={{
-          mask: "url(#videoMask)",
-          WebkitMask: "url(#videoMask)",
+          mask: "url(#Herovideo)",
+          WebkitMask: "url(#Herovideo)",
         }}
         onLoadedData={handleLoadedData}
         onSeeked={handleSeeked}
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
-        <source src="/resorts.mp4" type="video/mp4" />
+        <source src="/bgvideo.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <svg style={{ position: "absolute", width: 0, height: 0 }}>
         <defs>
           <mask
-            id="videoMask"
+            id="Herovideo"
             maskUnits="objectBoundingBox"
             maskContentUnits="objectBoundingBox"
           >
@@ -190,10 +138,19 @@ function HeroComponent() {
   const mouseY = useSpring(y, springConfig);
   const { scrollY } = useScroll();
   const navY = useTransform(scrollY, [250, 300], ["-10%", "-200%"]);
+  const [showfollower, setShowFollower] = useState(false);
   useEffect(() => {
     const onMouseMove = (event: MouseEvent) => {
+      if (!showfollower) {
+        setShowFollower(true);
+      }
+      console.log(event.clientX, event.clientY);
       mouseX.set(event.clientX - 28);
-      mouseY.set(event.clientY - 28);
+      const y = Math.max(event.clientY - 28);
+      if (y < 110) {
+        setShowFollower(false);
+      }
+      mouseY.set(y);
     };
     window.addEventListener("mousemove", onMouseMove);
     return () => window.removeEventListener("mousemove", onMouseMove);
@@ -216,7 +173,7 @@ function HeroComponent() {
         {isClicked && <VideoPlayer setIsclicked={setIsClicked} />}
       </AnimatePresence>
       <motion.div
-        className="absolute z-20"
+        className={`absolute z-20 ${showfollower ? "block" : "hidden"}`}
         onClick={handlevideoclick}
         style={{ x: mouseX, y: mouseY }}
       >
@@ -225,7 +182,7 @@ function HeroComponent() {
       <Background />
       <motion.div
         style={{ y: navY }}
-        className="fixed top-10 left-28 right-10 w-[90%] z-10"
+        className="fixed top-10 left-28 right-10 w-[90%] z-30"
       >
         <NavBar />
       </motion.div>

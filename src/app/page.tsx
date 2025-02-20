@@ -6,7 +6,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Details from "@/components/details";
 import Steps from "@/components/Steps";
-import PinnedSection from "@/components/Pin";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import StickyRelativeDemo from "@/components/Pin";
+import Parallax from "@/components/parallax";
+gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP);
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -14,7 +20,7 @@ const Page = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 10);
 
     return () => clearTimeout(timer);
   }, []);
@@ -28,9 +34,10 @@ const Page = () => {
       <Hero />
       <Introduction />
       <Details />
-      <Steps />
-      <div className="h-screen"></div>
-      <div className="h-screen"></div>
+      {/* <Parallax /> */}
+      <StickyRelativeDemo />
+      {/* <Steps /> */}
+      <div className="h-screen">2</div>
     </div>
   );
 };

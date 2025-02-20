@@ -1,55 +1,40 @@
-import Flog from "@/utils/flog";
-import { useScroll, useTransform, motion, useSpring } from "motion/react";
-import { useEffect, useState } from "react";
+"use client";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface ParallaxProps {
-  targetRef: React.RefObject<any>;
-  yMin: number;
-  yMax: number;
-  children: React.ReactNode;
-}
+gsap.registerPlugin(ScrollTrigger);
 
-const Parallax: React.FC<ParallaxProps> = ({
-  targetRef,
-  yMin,
-  yMax,
-  children,
-}) => {
-  const [width, setWidth] = useState<number>(1000);
+const ClipPathScrollAnimation = () => {
+  const boxRef = useRef(null);
 
-  function handleWindowSizeChange() {
-    setWidth(window.innerWidth);
-  }
   useEffect(() => {
-    window.addEventListener("resize", handleWindowSizeChange);
-    return () => {
-      window.removeEventListener("resize", handleWindowSizeChange);
-    };
+    gsap.to(boxRef.current, {
+      clipPath: "polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)",
+      duration: 2,
+      ease: "power2.inOut",
+      scrollTrigger: {
+        trigger: boxRef.current,
+        start: "top 80%",
+        end: "top 20%",
+        scrub: 2, // Smooth animation on scroll
+      },
+    });
   }, []);
 
-  const isMobile = width <= 768;
-
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start 20%", "end 20%"],
-  });
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 120, // Higher stiffness makes movement feel smoother
-    damping: 30, // Higher damping removes unnecessary bouncing
-    mass: 2.5, // Adjust mass for fluid movement
-    restDelta: 0.001,
-  });
-  // Flog(smoothProgress);
-  console.log(yMin, yMax, "ymin");
-  const y = useTransform(smoothProgress, [0, 1], [yMin, yMax]);
-  Flog(y);
-  if (isMobile) {
-    return <>{children}</>;
-  }
   return (
-    <motion.div transition={{ ease: "easeInOut" }} style={{ y }}>
-      {children}
-    </motion.div>
+    <div className="h-[200vh] flex items-center justify-center bg-gray-900">
+      <div
+        ref={boxRef}
+        className="w-64 h-64 bg-blue-500 flex items-center justify-center text-white text-2xl font-bold"
+        style={{
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+        }}
+      >
+        Scroll Me
+      </div>
+    </div>
   );
 };
-export default Parallax;
+
+export default ClipPathScrollAnimation;

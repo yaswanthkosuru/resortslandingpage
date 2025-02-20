@@ -15,8 +15,6 @@ export default function Details() {
     target: container2,
     offset: ["start end", "end start"],
   });
-  const y2 = useTransform(scrolly2progress, [0, 1], ["-10%", "50%"]);
-
   return (
     <div className="grid grid-cols-2 mt-20 h-[90vh] ">
       <div
@@ -25,7 +23,7 @@ export default function Details() {
         style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
       >
         <div className="top-[-10vh] left-0 h-[120vh] w-full">
-          <motion.div style={{ y }} className="relative w-full h-full">
+          <motion.div className="relative w-full h-full">
             <Image
               src={"/yogagirl.jpeg"}
               fill
@@ -42,7 +40,7 @@ export default function Details() {
         style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
       >
         <motion.div className=" h-full  my-auto bg-lightgreen  text-primary p-20">
-          <motion.div className="flex flex-col gap-4" style={{ y: y2 }}>
+          <motion.div className="flex flex-col gap-4">
             <div className="flex gap-4">
               <FaBars size={30} />
               <span className="text-xl">Wellness Sanctury</span>

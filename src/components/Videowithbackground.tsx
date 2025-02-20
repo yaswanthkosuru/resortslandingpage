@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import CloseIcon from "./ui/Closeicon";
 import { motion, useMotionValue, useSpring } from "motion/react";
 interface VideoPlayerProps {
@@ -7,6 +7,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLInputElement>(null);
+  const [showfollower, setShowFollower] = useState(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -16,6 +17,9 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
 
   useEffect(() => {
     const onMouseMove = (event: MouseEvent) => {
+      if (!showfollower) {
+        setShowFollower(true);
+      }
       mouseX.set(event.clientX - 28);
       mouseY.set(event.clientY - 28);
     };
@@ -33,18 +37,20 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
   return (
     <motion.div
       animate={{
-        y: ["100%", "0%"],
+        clipPath: ["inset(100% 0 0 0)", "inset(0 0 0 0)"],
         transition: { duration: 1 },
       }}
       exit={{
-        y: "-100%",
+        clipPath: ["inset(0 0 0 0)", "inset(0 0 100% 0)"],
         transition: { duration: 1 },
       }}
       onClick={() => setIsclicked((prev) => !prev)}
       className=" cursor-pointer overflow-hidden fixed inset-0 bg-black z-50 flex justify-center items-center h-screen"
     >
       <motion.div
-        className="absolute left-0 top-0 z-20"
+        className={`${
+          showfollower ? "block" : "hidden"
+        } absolute left-0 top-0 z-20`}
         style={{ x: mouseX, y: mouseY }}
       >
         <CloseIcon />
@@ -57,7 +63,7 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
           onTimeUpdate={handleProgress}
           className="h-full w-full object-cover rounded-lg"
         >
-          <source src="/resorts.mp4" type="video/mp4" />
+          <source src="/bgvideo.mp4" type="video/mp4" />
         </video>
 
         {/* Custom Controls */}
