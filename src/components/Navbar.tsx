@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 const navs = [
   {
     name: "Destinations",
-    link: "/",
+    link: "/destinations",
   },
   {
     name: "Wellness",

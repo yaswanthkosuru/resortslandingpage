@@ -59,7 +59,7 @@ const Background: React.FC<BackgroundProps> = ({
   const rectangleIndices = Array.from({ length: 10 }, (_, i) => i + 1);
 
   return (
-    <div className="relative w-full h-[calc(100vh+70px)] bg-[#2B3530] overflow-hidden">
+    <div className="relative w-full h-screen bg-[#2B3530] overflow-hidden">
       <Image
         src={"/well.jpeg"}
         fill

@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import Details from "@/components/details";
 import NavBar from "@/components/Navbar";
 import Steps from "@/components/Steps";
+import { motion } from "motion/react";
+import Testimonials from "@/components/Testimonials";
+import ContactForm from "@/components/ContactForm";
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +25,8 @@ const Page = () => {
   if (loading) {
     return <Loader />;
   }
+  const text =
+    "At ELEMENTIS, we use the Integrative Wellness approach, that considers psychological, physical, and nutritional aspects of your life to improve overall well-being and balance.";
 
   return (
     <div>
@@ -32,6 +37,10 @@ const Page = () => {
       {/* <Parallax /> */}
       {/* <StickyRelativeDemo /> */}
       <Steps />
+
+      <Testimonials />
+      <ContactForm />
+
       <div className="h-screen">2</div>
     </div>
   );

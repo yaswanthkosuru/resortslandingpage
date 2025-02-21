@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 import { FaBars } from "react-icons/fa";
+import MaskedText from "./ui/MaskedText";
 
 export default function Introduction() {
   const container = useRef(null);
@@ -39,18 +40,21 @@ export default function Introduction() {
         </div>
       </div>
       <div className="text-[40px] tracking-wider leading-snug col-span-2 mt-10 text-primary">
-        Welcome to a world of luxury and well-being with{" "}
-        <span className="text-secondary">Yaswanth Residency</span>, where you
-        will discover exquisite luxury health and wellness resorts and
-        residences nestled in the most breathtaking destinations on the globe.
+        <MaskedText text="Welcome to a world of luxury and well-being with" />
+        <span className="text-secondary">
+          <MaskedText text="Yaswanth Residency" />
+        </span>
+        <MaskedText text=", where you will discover exquisite luxury health" />
+        <MaskedText text="globe. and wellness resorts and residences nestled" />
+        <MaskedText text="most breathtaking destinations on the" />
         <br />
         <br />
         <br />
-        <div className="text-[20px] leading-normal tracking-normal w-1/2 text-wrap">
-          At Yaswanth Residency, we use the Integrative Wellness approach, that
-          considers psychological, physical, and nutritional aspects of your
-          life to improve overall well-being and balance.
-        </div>{" "}
+        <div className="text-[20px] leading-normal tracking-normal w-1/2">
+          <MaskedText text="At Yaswanth Residency, we use the Integrative Wellness approach, that" />
+          <MaskedText text="considers psychological, physical, and nutritional aspects of your" />
+          <MaskedText text="life to improve overall well-being and balance." />
+        </div>
       </div>
     </div>
   );

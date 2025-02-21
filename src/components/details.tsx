@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 import { FaBars } from "react-icons/fa";
+import MaskedText from "./ui/MaskedText";
 
 export default function Details() {
   const container = useRef(null);
@@ -43,16 +44,18 @@ export default function Details() {
           <motion.div className="flex flex-col gap-4">
             <div className="flex gap-4">
               <FaBars size={30} />
-              <span className="text-xl">Wellness Sanctury</span>
+              <span className="text-xl">
+                <MaskedText text="Wellness Sanctury" />
+              </span>
             </div>
             <div className="text-3xl tracking-wider font-light leading-normal">
-              <span className="text-secondary">Personalized</span> wellness,
-              innovation, and nature meet in synergy
+              <span className="text-secondary">Personalized</span>
+              <MaskedText text="wellness,innovation, and nature" />
             </div>
             <div>
-              At ELEMENTIS, we use the Integrative Wellness approach, that
-              considers psychological, physical, and nutritional aspects of your
-              life to improve overall well-being and balance.
+              <MaskedText text="At ELEMENTIS, we use the Integrative Wellness approach, that" />
+              <MaskedText text="considers psychological, physical, and nutritional aspects of your" />
+              <MaskedText text="life to improve overall well-being and balance." />
             </div>
             <div className="text-xl mx-auto underline underline-offset-4">
               Discover More
