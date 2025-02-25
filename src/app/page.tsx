@@ -10,6 +10,7 @@ import Steps from "@/components/Steps";
 import { motion } from "motion/react";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
+import Footer from "@/components/Footer";
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -39,9 +40,11 @@ const Page = () => {
       <Steps />
 
       <Testimonials />
-      <ContactForm />
+      <div id="contact-form">
+        <ContactForm />
+      </div>
 
-      <div className="h-screen">2</div>
+      <Footer />
     </div>
   );
 };

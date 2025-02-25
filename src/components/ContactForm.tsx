@@ -167,13 +167,12 @@ function Form() {
 const ContactForm = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref });
-  const y = useTransform(scrollYProgress, [0.2, 0.8], ["0%", "-15%"]);
 
   return (
     <div ref={ref} className="grid grid-cols-2 min-h-[calc(100vh+100px)]">
       {/* Image Column */}
       <div className="relative h-full overflow-hidden">
-        <motion.div style={{ y }} className="relative w-full h-full">
+        <motion.div className="relative w-full h-full">
           <Image src="/resort.jpeg" objectFit="cover" fill alt="Resort" />
         </motion.div>
       </div>

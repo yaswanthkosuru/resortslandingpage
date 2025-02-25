@@ -1,84 +1,152 @@
-"use client";
-import { motion, AnimatePresence, delay } from "framer-motion";
-import { usePathname } from "next/navigation";
-import { LayoutRouterContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useContext, useRef } from "react";
+import { animate, MotionValue, useScroll, useTransform } from "motion/react";
+import { motion, useMotionValue } from "motion/react";
+import { div } from "motion/react-client";
+import React, { useEffect, useRef, useState } from "react";
 
-// Helper component to handle Frozen Router context
-function FrozenRouter(props: { children: React.ReactNode }) {
-  const context = useContext(LayoutRouterContext ?? {});
-  const frozen = useRef(context).current;
+interface RectangleGroupProps {
+  rectangleIndices: number[];
+  scrollProgress: MotionValue<number>;
+  rectHeight: MotionValue<number>;
+  startOffset: number;
+  fill: string;
+}
 
-  if (!frozen) {
-    return <>{props.children}</>;
+interface RectangleProps {
+  index: number;
+  rectHeight: MotionValue<number>;
+  startOffset: number;
+  totallen: number;
+  fill: string;
+}
+
+export const Rectangle: React.FC<RectangleProps> = ({
+  index,
+  rectHeight,
+  startOffset,
+  totallen,
+  fill,
+}) => {
+  let step;
+  let yPosition;
+  if (startOffset === 0) {
+    step = 0.3 / totallen;
+    yPosition = index * step + startOffset - 0.05;
+  } else {
+    step = 0.25 / totallen;
+    yPosition = index * step + startOffset;
   }
 
   return (
-    <LayoutRouterContext.Provider value={frozen}>
-      {props.children}
-    </LayoutRouterContext.Provider>
+    <motion.rect
+      key={index}
+      x="0"
+      y={yPosition}
+      width="1"
+      style={{ height: rectHeight }}
+      fill={fill}
+    />
   );
-}
-
-// Page transition variants with black layout
-const blackLayoutVariants = {
-  hidden: {
-    opacity: 0,
-    y: "100%", // Start from the bottom of the screen
-    transition: { duration: 0.8, ease: "easeInOut" },
-  },
-  enter: {
-    opacity: 1,
-    y: 0, // Stay in the center for 0.1s
-    transition: { duration: 0.8, ease: "easeOut" },
-  },
-  exit: {
-    opacity: 0,
-    y: "-100%", // Move it out upwards
-    transition: { duration: 0.8, ease: "easeIn" },
-  },
 };
 
-const pageVariants = {
-  hidden: {
-    opacity: 0,
-    y: "100%", // Start from the bottom of the screen
-    transition: { duration: 1, ease: "easeInOut" }, // Adding delay to "stay"
-  },
-  enter: {
-    opacity: [1, 1, 1],
-    y: ["100%", "0%", "-100%"], // Start from the bottom of the screen
-    transition: { duration: 2, ease: "easeInOut" }, // Adding array of durations
-  },
-  exit: {
-    opacity: 0,
-    y: "-100%", // Move upwards to hide the page
-    transition: { duration: 1, ease: "easeIn" },
-  },
-};
-
-const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
-  const key = usePathname(); // Get the pathname for key to trigger re-animation on page change
-
+export const RectangleGroup: React.FC<RectangleGroupProps> = ({
+  rectangleIndices,
+  rectHeight,
+  startOffset,
+  fill,
+}) => {
   return (
-    <AnimatePresence mode="popLayout">
-      <motion.div key={key} transition={{ ease: "easeInOut", duration: 0.75 }}>
-        <FrozenRouter>
-          <motion.div
-            initial="hidden"
-            animate="enter"
-            exit="exit"
-            variants={pageVariants}
-            className="absolute bg-[#1D1D1E] h-screen w-full z-50"
+    <>
+      {rectangleIndices.map((index) => (
+        <Rectangle
+          key={index}
+          fill={fill}
+          index={index}
+          rectHeight={rectHeight}
+          startOffset={startOffset}
+          totallen={rectangleIndices.length}
+        />
+      ))}
+    </>
+  );
+};
+interface SvgMaskDemoProps {
+  fill: string;
+}
+const SvgMaskDemo: React.FC<SvgMaskDemoProps> = ({ fill }) => {
+  const scrollYProgress = useMotionValue(0);
+  useEffect(() => {
+    const controls = animate(scrollYProgress, 1, {
+      duration: 0.5,
+      ease: "easeOut",
+    });
+    return controls.stop;
+  }, [scrollYProgress]);
+  const firstGroupHeight = useTransform(scrollYProgress, [0, 0.8], [0, 0.026]);
+  const secondGroupHeight = useTransform(
+    scrollYProgress,
+    [0.25, 0.8],
+    [0, 0.026]
+  );
+  const thirdGroupHeight = useTransform(
+    scrollYProgress,
+    [0.25, 0.9],
+    [0, 0.026]
+  );
+  const fourthGroupHeight = useTransform(
+    scrollYProgress,
+    [0.75, 1],
+    [0, 0.031]
+  );
+  const rectangleIndices = Array.from({ length: 10 }, (_, i) => i + 1);
+  return (
+    <div
+      className="relative w-full h-screen bg-primary overflow-hidden"
+      style={{
+        mask: "url(#transitionmask)",
+        WebkitMask: "url(#transitionmask)",
+      }}
+    >
+      <svg>
+        <defs>
+          <mask
+            maskUnits="objectBoundingBox"
+            maskContentUnits="objectBoundingBox"
+            id="transitionmask"
           >
-            {" "}
-            home
-          </motion.div>
-          <div className="z-0">{children}</div>
-        </FrozenRouter>
-      </motion.div>
-    </AnimatePresence>
+            {fill === "black" && <rect width="1" height="1" fill="white" />}
+            <RectangleGroup
+              startOffset={0.75}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={firstGroupHeight}
+              fill={fill}
+            />
+            <RectangleGroup
+              startOffset={0.5}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={secondGroupHeight}
+              fill={fill}
+            />
+            <RectangleGroup
+              startOffset={0.25}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={thirdGroupHeight}
+              fill={fill}
+            />
+            <RectangleGroup
+              startOffset={0}
+              scrollProgress={scrollYProgress}
+              rectangleIndices={rectangleIndices}
+              rectHeight={fourthGroupHeight}
+              fill={fill}
+            />
+          </mask>
+        </defs>
+      </svg>
+    </div>
   );
 };
 
-export default PageTransitionEffect;
+export default SvgMaskDemo;

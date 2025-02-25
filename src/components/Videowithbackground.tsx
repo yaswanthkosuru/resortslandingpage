@@ -50,7 +50,7 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
       <motion.div
         className={`${
           showfollower ? "block" : "hidden"
-        } absolute left-0 top-0 z-20`}
+        } fixed left-0 top-0 z-20`}
         style={{ x: mouseX, y: mouseY }}
       >
         <CloseIcon />
@@ -64,7 +64,7 @@ export default function VideoPlayer({ setIsclicked }: VideoPlayerProps) {
           className="h-full w-full object-cover rounded-lg"
         >
           <source
-            src="https://res.cloudinary.com/kvpproducts/video/upload/v1740063352/main_s5vwan.mp4"
+            src="https://res.cloudinary.com/kvpproducts/video/upload/v1740229590/herovideo_mo0uoc.mp4 "
             type="video/mp4"
           />
         </video>

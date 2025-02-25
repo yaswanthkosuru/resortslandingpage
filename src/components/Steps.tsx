@@ -22,14 +22,14 @@ const g: cardDetails[] = [
     title: "Resorts",
     subtitle: "innovation culture",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, omnis repellat dignissimos sit molestias, labore dolore delectus optio iste, laborum debitis totam molestiae veritatis nam fugit consequuntur autem quo doloribus.",
+      "we redefine luxury with a touch of innovation. From AI-powered concierge services to eco-friendly smart villas, our resort blends cutting-edge technology with unparalleled comfort.",
   },
   {
     range: ["02", "02"],
     title: "Tourism",
     subtitle: "Pioneering attitude",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, omnis repellat dignissimos sit molestias, labore dolore delectus optio iste, laborum debitis totam molestiae veritatis nam fugit consequuntur autem quo doloribus.",
+      "Enjoy an immersive experience where innovation meets nature—solar-powered bungalows, automated climate control, and personalized digital services, all designed to enhance your stay while preserving the beauty of our surroundings.",
   },
 ];
 const Background: React.FC<BackgroundProps> = ({

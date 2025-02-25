@@ -69,7 +69,7 @@ const Background: React.FC = () => {
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
         <source
-          src="https://res.cloudinary.com/kvpproducts/video/upload/v1740043925/hero-bg_xybqx8.mp4"
+          src="https://res.cloudinary.com/kvpproducts/video/upload/v1740229590/herovideo_mo0uoc.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
@@ -147,7 +147,7 @@ function HeroComponent() {
     }
     mouseX.set(event.clientX - 28);
     const y = Math.max(event.clientY - 28);
-    if (y < 110) {
+    if (y < 150) {
       setShowFollower(false);
     }
     mouseY.set(y);
