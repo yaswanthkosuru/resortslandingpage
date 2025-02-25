@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { outfit } from "./fonts";
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Yaswanth Portfolio",
+  title: "Resorts Landing Page",
+  description: "Explore luxury resorts and book your dream vacation with ease.",
 };
 
 export default function RootLayout({
